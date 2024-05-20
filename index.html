@@ -1,36 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Todo App solution for frontendmentor.io">
   <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-  
-  <title>Frontend Mentor | Todo app</title>
-
-  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
-  <style>
-    .attribution { font-size: 11px; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <title>Frontend Mentor | Todo App</title>
 </head>
+
 <body>
+  <header>
+    <h1 class="title">TODO</h1>
+    <button type="button" id="themeSelector" class="theme-selector" aria-label="theme selector">
+      <img src="./images/icon-sun.svg" alt="" class="logo">
+    </button>
+  </header>
 
-  Todo
+  <main>
+    <form class="input container">
+      <input type="text" name="create task" id="createTask" class="task">
+      <button type="submit">+</button>
+    </form>
 
-  <!-- Add dynamic number --> items left
+    <ul class="list container"></ul>
 
-  All
-  Active 
-  Completed
+    <div class="control container">
+      <p class="control__task-count"></p>
+      <button type="button" class="control__task-clear">Clear Completed</button>
+    </div>
 
-  Clear Completed
+    <div class="filter container">
+      <button type="button" class="filter__all">All</button>
+      <button type="button" class="filter__active">Active</button>
+      <button type="button" class="filter__completed">Completed</button>
+    </div>
+  </main>
 
-  Drag and drop to reorder list
+  <footer>
+    <p>Drag and drop to reorder list</p>
+  </footer>
 
-  <div class="attribution">
-    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
-    Coded by <a href="#">Your Name Here</a>.
-  </div>
+  <script src="index.js"></script>
 </body>
+
 </html>
