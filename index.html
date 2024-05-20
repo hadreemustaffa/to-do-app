@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
   <meta charset="UTF-8">
@@ -15,19 +15,34 @@
 
 <body>
   <header>
-    <h1 class="title">TODO</h1>
+    <h1 class="title"><a href="/">TODO</a></h1>
     <button type="button" id="themeSelector" class="theme-selector" aria-label="theme selector">
       <img src="./images/icon-sun.svg" alt="" class="logo">
     </button>
   </header>
 
   <main>
-    <form class="input container">
-      <input type="text" name="create task" id="createTask" class="task">
-      <button type="submit">+</button>
+    <form class="form container">
+      <div class="form__circle"></div>
+      <input type="text" name="create task" id="createTask" class="form__input task" placeholder="Create a new todo..">
+      <button type="submit" class="form__submit">add</button>
     </form>
 
-    <ul class="list container"></ul>
+    <ul class="list container">
+      <li class="list__item task completed">
+        <p class="list__item-text">Jog around for 5 minutes</p>
+        <button type="button" aria-label="remove task" id="removeTask" class="list__btn-remove">
+          <img src="./images/icon-cross.svg" alt="">
+        </button>
+      </li>
+
+      <li class="list__item task">
+        <p class="list__item-text">Jog around for 5 minutes</p>
+        <button type="button" aria-label="remove task" id="removeTask" class="list__btn-remove">
+          <img src="./images/icon-cross.svg" alt="">
+        </button>
+      </li>
+    </ul>
 
     <div class="control container">
       <p class="control__task-count"></p>
@@ -35,9 +50,9 @@
     </div>
 
     <div class="filter container">
-      <button type="button" class="filter__all">All</button>
-      <button type="button" class="filter__active">Active</button>
-      <button type="button" class="filter__completed">Completed</button>
+      <button type="button" class="filter__btn">All</button>
+      <button type="button" class="filter__btn">Active</button>
+      <button type="button" class="filter__btn">Completed</button>
     </div>
   </main>
 
