@@ -125,13 +125,14 @@ header {
   display: flex;
   width: 100%;
   justify-content: space-between;
+  margin-top: 2rem;
 }
 body {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
-  margin: 2rem;
+  margin: 0 2rem;
   background-color: var(--clr-bg-body);
   background-image: url(./images/bg-mobile-light.jpg);
   background-size: 100vw 30vh;
@@ -142,6 +143,19 @@ main {
   flex-direction: column;
   gap: 1.5rem;
   width: 100%;
+}
+input,
+button {
+  border: transparent;
+  background-color: transparent;
+  padding: 0;
+}
+button:hover {
+  cursor: pointer;
+  color: var(--clr-btn-hover);
+}
+button:active {
+  color: var(--clr-primary);
 }
 
 .container {
@@ -189,28 +203,28 @@ ul {
   border-radius: 100%;
 }
 
-input,
-button {
-  border: transparent;
-  background-color: transparent;
+.form {
+  gap: 0.5rem;
 }
-button:hover {
-  cursor: pointer;
-  color: var(--clr-btn-hover);
-}
-button:active {
-  color: var(--clr-primary);
-}
-
 .form__input {
   width: 100%;
+  padding: 0 0.5rem;
+  word-wrap: break-word;
 }
 .form__submit {
-  border: 1px solid var(--clr-border-circle);
-  border-radius: 8px;
-  padding: 1rem;
+  padding: 0;
+  line-height: 1;
   margin-left: auto;
 }
 .form__submit:hover {
   border-color: var(--clr-neutral-500);
+}
+
+.control {
+  justify-content: space-between;
+}
+
+.filter {
+  gap: 1rem;
+  justify-content: center;
 }
