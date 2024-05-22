@@ -1,14 +1,28 @@
+import { v4 as uuidv4 } from './node_modules/uuid';
+
 const html = document.documentElement;
 const selectThemeButton = document.getElementById('themeSelector');
 const clearTaskButton = document.querySelector('#clearTask');
-const titleLink = document.querySelector('.title a');
 const taskInputText = document.querySelector('#createTask');
-const tasksDummy = document.querySelectorAll('.list__item.task');
 const form = document.querySelector('form');
 const taskList = document.querySelector('.list');
+const elContainers = document.querySelectorAll('.container:not(:first-child)');
 
-let tasks = [];
-let id = 0;
+const tasks = taskList.children;
+
+const setContainerDisplayNone = () => {
+  elContainers.forEach((container) => {
+    container.removeAttribute('style');
+  });
+};
+
+const removeTaskFromList = (array, element, list) => {
+  array.removeChild(element);
+
+  if (list.length == 0) {
+    setContainerDisplayNone();
+  }
+};
 
 const createTaskElement = (inputText) => {
   const li = document.createElement('li');
@@ -18,15 +32,17 @@ const createTaskElement = (inputText) => {
   const buttonDelete = document.createElement('button');
   const img = document.createElement('img');
 
+  let id = uuidv4();
+
   li.classList.add('list__item', 'task');
 
-  label.setAttribute('for', `checkbox${id + 1}`);
+  label.setAttribute('for', id);
   label.classList.add('sr-only');
   label.textContent = 'Check box to complete task';
 
   inputCheckbox.type = 'checkbox';
   inputCheckbox.name = 'complete';
-  inputCheckbox.id = `${id + 1}`;
+  inputCheckbox.id = id;
   inputCheckbox.classList.add('list__item-input');
 
   inputCheckbox.addEventListener('change', () => {
@@ -38,11 +54,11 @@ const createTaskElement = (inputText) => {
 
   buttonDelete.type = 'button';
   buttonDelete.ariaLabel = 'remove task';
-  buttonDelete.id = `removeTask${id + 1}`;
+  buttonDelete.id = `remove-${id}`;
   buttonDelete.classList.add('list__btn-remove');
 
   buttonDelete.addEventListener('click', () => {
-    taskList.removeChild(li);
+    removeTaskFromList(taskList, li, tasks);
   });
 
   img.src = './images/icon-cross.svg';
@@ -53,7 +69,6 @@ const createTaskElement = (inputText) => {
   buttonDelete.appendChild(img);
   li.appendChild(buttonDelete);
 
-  id++;
   return li;
 };
 
@@ -70,13 +85,19 @@ clearTaskButton.addEventListener('click', () => {
   const completedTasks = document.querySelectorAll('.completed');
 
   completedTasks.forEach((task) => {
-    taskList.removeChild(task);
+    removeTaskFromList(taskList, task, tasks);
   });
 });
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   addNewTask();
+
+  elContainers.forEach((container) => {
+    if (!container.hasAttribute('style')) {
+      container.style.display = 'flex';
+    }
+  });
 });
 
 selectThemeButton.addEventListener('click', () => {
