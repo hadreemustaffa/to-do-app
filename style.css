@@ -202,7 +202,9 @@ input[type='checkbox']:checked::before {
   inset: 0;
   margin: auto;
 }
-
+.theme-selector img {
+  transition: all 0.35s ease-out;
+}
 .container {
   display: flex;
   flex-direction: row;

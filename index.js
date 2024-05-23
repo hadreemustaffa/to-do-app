@@ -7,6 +7,7 @@ const taskInputText = document.querySelector('#createTask');
 const form = document.querySelector('form');
 const taskList = document.querySelector('.list');
 const elContainers = document.querySelectorAll('.container:not(:first-child)');
+const themeLogo = document.querySelector('.logo');
 
 const tasks = taskList.children;
 
@@ -101,7 +102,13 @@ form.addEventListener('submit', (e) => {
 });
 
 selectThemeButton.addEventListener('click', () => {
-  html.getAttribute('data-theme') == 'light'
-    ? html.setAttribute('data-theme', 'dark')
-    : html.setAttribute('data-theme', 'light');
+  if (html.getAttribute('data-theme') == 'light') {
+    html.setAttribute('data-theme', 'dark');
+    themeLogo.src = './icon-moon.svg';
+    themeLogo.style.transform = 'rotate(360deg)';
+  } else {
+    html.setAttribute('data-theme', 'light');
+    themeLogo.src = './icon-sun.svg';
+    themeLogo.removeAttribute('style');
+  }
 });
