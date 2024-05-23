@@ -11,18 +11,19 @@ const themeLogo = document.querySelector('.logo');
 
 const tasks = taskList.children;
 
-const setContainerDisplayNone = () => {
+const updateContainerDisplay = () => {
   elContainers.forEach((container) => {
-    container.removeAttribute('style');
+    if (tasks.length > 0) {
+      container.style.display = 'flex';
+    } else {
+      container.removeAttribute('style');
+    }
   });
 };
 
-const removeTaskFromList = (array, element, list) => {
-  array.removeChild(element);
-
-  if (list.length == 0) {
-    setContainerDisplayNone();
-  }
+const removeTaskFromList = (parentElement, element) => {
+  parentElement.removeChild(element);
+  updateContainerDisplay();
 };
 
 const createTaskElement = (inputText) => {
@@ -59,7 +60,7 @@ const createTaskElement = (inputText) => {
   buttonDelete.classList.add('list__btn-remove');
 
   buttonDelete.addEventListener('click', () => {
-    removeTaskFromList(taskList, li, tasks);
+    removeTaskFromList(taskList, li);
   });
 
   img.src = './icon-cross.svg';
@@ -84,7 +85,6 @@ const addNewTask = () => {
 
 clearTaskButton.addEventListener('click', () => {
   const completedTasks = document.querySelectorAll('.completed');
-
   completedTasks.forEach((task) => {
     removeTaskFromList(taskList, task, tasks);
   });
@@ -93,12 +93,7 @@ clearTaskButton.addEventListener('click', () => {
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   addNewTask();
-
-  elContainers.forEach((container) => {
-    if (!container.hasAttribute('style')) {
-      container.style.display = 'flex';
-    }
-  });
+  updateContainerDisplay();
 });
 
 selectThemeButton.addEventListener('click', () => {
