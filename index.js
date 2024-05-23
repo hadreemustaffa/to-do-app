@@ -61,7 +61,7 @@ const createTaskElement = (inputText) => {
     removeTaskFromList(taskList, li, tasks);
   });
 
-  img.src = './images/icon-cross.svg';
+  img.src = './icon-cross.svg';
 
   li.appendChild(label);
   li.appendChild(inputCheckbox);

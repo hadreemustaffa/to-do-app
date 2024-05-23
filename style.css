@@ -80,6 +80,8 @@ h6 {
 
   --clr-bg-body: var(--clr-theme-light-100);
   --clr-bg-container: var(--clr-theme-light-100);
+
+  --bg-img: url('./public/bg-mobile-light.jpg');
 }
 
 :root[data-theme='dark'] {
@@ -96,6 +98,8 @@ h6 {
 
   --clr-bg-body: var(--clr-theme-dark-900);
   --clr-bg-container: var(--clr-theme-dark-700);
+
+  --bg-img: url('./public/bg-mobile-dark.jpg');
 }
 
 /* || typography */
@@ -140,10 +144,10 @@ button:hover {
 
 /* || layout */
 html[data-theme='light'] body {
-  background-image: url(./images/bg-mobile-light.jpg);
+  background-image: var(--bg-img);
 }
 html[data-theme='dark'] body {
-  background-image: url(./images/bg-mobile-dark.jpg);
+  background-image: var(--bg-img);
 }
 header {
   display: flex;
@@ -191,7 +195,7 @@ input[type='checkbox']:checked {
   transition: all 0.25s ease;
 }
 input[type='checkbox']:checked::before {
-  content: url('./images/icon-check.svg');
+  content: url('./public/icon-check.svg');
   position: absolute;
   width: 10px;
   height: 14px;
