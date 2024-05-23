@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Todo App solution for frontendmentor.io">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
+  
+  <title>Frontend Mentor | To-Do App</title>
+  <script type="module" crossorigin src="/assets/index-d869e401.js"></script>
+  <link rel="stylesheet" href="/assets/index-f3d911cc.css">
+</head>
+
+<body>
+  <header>
+    <h1 class="title"><a href="/" aria-label="To Do">TODO</a></h1>
+    <button type="button" id="themeSelector" class="theme-selector" aria-label="theme selector">
+      <img src="./icon-sun.svg" alt="" class="logo">
+    </button>
+  </header>
+
+  <main>
+    <form class="form container">
+      <div class="form__circle"></div>
+      <input type="text" name="create task" id="createTask" class="form__input task" placeholder="Create a new to do"
+        maxlength="200" required>
+      <button type="submit" class="form__submit">add</button>
+    </form>
+
+    <div class="container">
+      <ul class="list"></ul>
+
+      <div class="control">
+        <p class="control__task-count"></p>
+        <button type="button" id="clearTask" class="control__task-clear">Clear Completed</button>
+      </div>
+    </div>
+
+    <div class="filter container">
+      <button type="button" class="filter__btn">All</button>
+      <button type="button" class="filter__btn">Active</button>
+      <button type="button" class="filter__btn">Completed</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>Drag and drop to reorder list</p>
+  </footer>
+
+  
+</body>
+
+</html>
