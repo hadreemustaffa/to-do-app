@@ -115,16 +115,27 @@ h1 {
   letter-spacing: 0.3em;
 }
 a {
+  color: inherit;
   text-decoration: none;
 }
 a:visited {
   color: inherit;
 }
-button {
+input:not([type='text']):hover,
+button:hover {
+  cursor: pointer;
+  color: var(--clr-btn-hover);
+}
+button,
+footer {
   color: var(--clr-text-btn);
 }
 button:hover {
   color: var(--clr-text-btn-hover);
+}
+button:active,
+.filter__btn.selected {
+  color: var(--clr-primary);
 }
 .filter__btn {
   font-size: var(--fs-lg);
@@ -149,12 +160,6 @@ html[data-theme='light'] body {
 html[data-theme='dark'] body {
   background-image: var(--bg-img);
 }
-header {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  margin-top: 2rem;
-}
 body {
   display: flex;
   flex-direction: column;
@@ -164,27 +169,27 @@ body {
   background-color: var(--clr-bg-body);
   background-size: 100vw 200px;
   background-repeat: no-repeat;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
+  transition: background-image 0.3s ease;
+}
+header {
+  display: flex;
+  width: min(100%, 680px);
+  justify-content: space-between;
+  margin-top: 2rem;
+  transition: margin-top 0.25s ease;
 }
 main {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  width: 100%;
+  width: min(100%, 680px);
 }
 input,
 button {
   border: transparent;
   background-color: transparent;
   padding: 0;
-}
-input:not([type='text']):hover,
-button:hover {
-  cursor: pointer;
-  color: var(--clr-btn-hover);
-}
-button:active {
-  color: var(--clr-primary);
 }
 input[type='checkbox'] {
   appearance: none;
@@ -221,6 +226,10 @@ input[type='checkbox']:checked::before {
 }
 .container:not(:first-child) {
   display: none;
+}
+footer.container {
+  background-color: transparent;
+  box-shadow: none;
 }
 
 .list {
@@ -295,6 +304,32 @@ input[type='checkbox']:checked::before {
 
 footer {
   margin-bottom: 2rem;
+}
+
+@media (min-width: 36rem) {
+  :root[data-theme='light'] {
+    --bg-img: url('./public/bg-desktop-light.jpg');
+  }
+  :root[data-theme='dark'] {
+    --bg-img: url('./public/bg-desktop-dark.jpg');
+  }
+
+  body {
+    background-size: 100vw 250px;
+  }
+  header {
+    margin-top: 4.5rem;
+  }
+}
+
+@media (min-width: 62rem) {
+  body {
+    background-size: 100vw 300px;
+  }
+
+  header {
+    margin-top: 8rem;
+  }
 }
 
 /* || utility */

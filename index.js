@@ -8,10 +8,88 @@ const form = document.querySelector('form');
 const taskList = document.querySelector('.list');
 const elContainers = document.querySelectorAll('.container:not(:first-child)');
 const themeLogo = document.querySelector('.logo');
+const main = document.querySelector('main');
+const filterContainer = document.querySelector('.filter');
+const filterButtons = document.querySelectorAll('.filter__btn');
+const taskCount = document.querySelector('.control__task-count');
 
 const tasks = taskList.children;
 
+const setFilterDocumentStructure = () => {
+  const isLargeScreen = window.innerWidth >= 760;
+  const isInMain = filterContainer.parentElement === main;
+
+  if (isLargeScreen) {
+    filterContainer.classList.remove('container');
+    if (isInMain) {
+      taskCount.insertAdjacentElement('afterend', filterContainer);
+    }
+  } else if (!isLargeScreen && !isInMain) {
+    main.appendChild(filterContainer);
+    filterContainer.classList.add('container');
+  }
+};
+
+setFilterDocumentStructure();
+
+window.addEventListener('resize', () => {
+  setFilterDocumentStructure();
+});
+
+const filterList = (btnElement) => {
+  document.querySelector('.selected')?.classList.remove('selected');
+
+  const allTasks = document.querySelectorAll('.list__item.task');
+  const completedTasks = document.querySelectorAll(
+    '.list__item.task.completed'
+  );
+  const activeTasks = document.querySelectorAll(
+    '.list__item.task:not(.completed)'
+  );
+
+  const removeStyleAttribute = (elements) => {
+    elements.forEach((element) => {
+      element.removeAttribute('style');
+    });
+  };
+
+  const setDisplayNone = (elements) => {
+    elements.forEach((element) => {
+      element.style.display = 'none';
+    });
+  };
+
+  btnElement.classList.add('selected');
+
+  if (btnElement.id == 'filterAll') {
+    removeStyleAttribute(allTasks);
+  }
+  if (btnElement.id == 'filterActive') {
+    removeStyleAttribute(activeTasks);
+    setDisplayNone(completedTasks);
+  }
+  if (btnElement.id == 'filterCompleted') {
+    removeStyleAttribute(completedTasks);
+    setDisplayNone(activeTasks);
+  }
+};
+
+const updateTaskCount = () => {
+  let count = tasks.length;
+
+  if (count > 0) {
+    if (count < 2) {
+      taskCount.textContent = `${count} item left`;
+    } else {
+      taskCount.textContent = `${count} items left`;
+    }
+  } else {
+    taskCount.textContent = '';
+  }
+};
+
 const updateContainerDisplay = () => {
+  updateTaskCount();
   elContainers.forEach((container) => {
     if (tasks.length > 0) {
       container.style.display = 'flex';
@@ -106,4 +184,10 @@ selectThemeButton.addEventListener('click', () => {
     themeLogo.src = './icon-sun.svg';
     themeLogo.removeAttribute('style');
   }
+});
+
+filterButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    filterList(button);
+  });
 });
