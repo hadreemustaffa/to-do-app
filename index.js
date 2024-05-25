@@ -14,6 +14,9 @@ const filterButtons = document.querySelectorAll('.filter__btn');
 const taskCount = document.querySelector('.control__task-count');
 
 const tasks = taskList.children;
+const allTasks = '.list__item.task';
+const completedTasks = '.list__item.task.completed';
+const activeTasks = '.list__item.task:not(.completed)';
 
 const setFilterDocumentStructure = () => {
   const isLargeScreen = window.innerWidth >= 760;
@@ -36,46 +39,46 @@ window.addEventListener('resize', () => {
   setFilterDocumentStructure();
 });
 
-const filterList = (btnElement) => {
-  document.querySelector('.selected')?.classList.remove('selected');
+const removeStyleAttribute = (elements) => {
+  document.querySelectorAll(elements).forEach((element) => {
+    element.removeAttribute('style');
+  });
+};
 
-  const allTasks = document.querySelectorAll('.list__item.task');
-  const completedTasks = document.querySelectorAll(
-    '.list__item.task.completed'
-  );
-  const activeTasks = document.querySelectorAll(
-    '.list__item.task:not(.completed)'
-  );
+const setDisplayNone = (elements) => {
+  document.querySelectorAll(elements).forEach((element) => {
+    element.style.display = 'none';
+  });
+};
 
-  const removeStyleAttribute = (elements) => {
-    elements.forEach((element) => {
-      element.removeAttribute('style');
-    });
-  };
-
-  const setDisplayNone = (elements) => {
-    elements.forEach((element) => {
-      element.style.display = 'none';
-    });
-  };
-
-  btnElement.classList.add('selected');
-
-  if (btnElement.id == 'filterAll') {
+const updateListDisplay = (element) => {
+  if (element.id == 'filterAll') {
     removeStyleAttribute(allTasks);
   }
-  if (btnElement.id == 'filterActive') {
+  if (element.id == 'filterActive') {
     removeStyleAttribute(activeTasks);
     setDisplayNone(completedTasks);
   }
-  if (btnElement.id == 'filterCompleted') {
+  if (element.id == 'filterCompleted') {
     removeStyleAttribute(completedTasks);
     setDisplayNone(activeTasks);
   }
 };
 
+const filterList = (btnElement) => {
+  document.querySelector('.selected')?.classList.remove('selected');
+  btnElement.classList.add('selected');
+  updateListDisplay(btnElement);
+};
+
+filterButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    filterList(button);
+  });
+});
+
 const updateTaskCount = () => {
-  let count = tasks.length;
+  let count = document.querySelectorAll(activeTasks).length;
 
   if (count > 0) {
     if (count < 2) {
@@ -126,7 +129,11 @@ const createTaskElement = (inputText) => {
   inputCheckbox.classList.add('list__item-input');
 
   inputCheckbox.addEventListener('change', () => {
+    const selectedFilter = document.querySelector('.selected');
     li.classList.toggle('completed');
+
+    updateListDisplay(selectedFilter);
+    updateTaskCount();
   });
 
   p.classList.add('list__item-text');
@@ -184,10 +191,4 @@ selectThemeButton.addEventListener('click', () => {
     themeLogo.src = './icon-sun.svg';
     themeLogo.removeAttribute('style');
   }
-});
-
-filterButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    filterList(button);
-  });
 });

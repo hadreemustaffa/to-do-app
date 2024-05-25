@@ -170,7 +170,6 @@ body {
   background-size: 100vw 200px;
   background-repeat: no-repeat;
   transition: background-color 0.3s ease;
-  transition: background-image 0.3s ease;
 }
 header {
   display: flex;
@@ -284,7 +283,7 @@ footer.container {
   word-wrap: break-word;
 }
 .form__submit {
-  padding: 0;
+  padding: 0.5rem;
   line-height: 1;
   margin-left: auto;
 }
