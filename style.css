@@ -290,10 +290,16 @@ footer.container {
 }
 
 .control {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
   padding: 1rem;
+}
+.control__task-count {
+  place-self: start;
+}
+.control__task-clear {
+  place-self: end;
 }
 
 .filter {
@@ -319,6 +325,15 @@ footer {
   }
   header {
     margin-top: 4.5rem;
+  }
+}
+
+@media (min-width: 47.5rem) {
+  .control {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .filter {
+    grid-column: 2 / span 1;
   }
 }
 
