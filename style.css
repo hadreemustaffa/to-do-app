@@ -244,6 +244,7 @@ footer.container {
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+  transition: all 0.25s ease;
 }
 .list__item.task {
   border-bottom: 1px solid var(--clr-border);
@@ -342,4 +343,24 @@ footer {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+.dragging {
+  opacity: 0.5;
+  cursor: grabbing !important;
+}
+
+.filtered,
+.removing {
+  padding: 0 1rem;
+}
+.filtered,
+.filtered input,
+.filtered input::before,
+.removing,
+.removing input,
+.removing input::before {
+  opacity: 0;
+  min-height: 0 !important;
+  height: 0 !important;
+  border: none !important;
 }
