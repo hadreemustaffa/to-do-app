@@ -11,14 +11,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet">
   
   <title>Frontend Mentor | To-Do App</title>
-  <script type="module" crossorigin src="/to-do-app/assets/index-4d360a9b.js"></script>
-  <link rel="stylesheet" href="/to-do-app/assets/index-f216e5c2.css">
+  <script type="module" crossorigin src="/to-do-app/assets/index-84b0f9a3.js"></script>
+  <link rel="stylesheet" href="/to-do-app/assets/index-2f768b59.css">
 </head>
 
 <body>
   <header>
-    <h1 class="title"><a href="/" aria-label="To Do">TODO</a></h1>
-    <button type="button" id="themeSelector" class="theme-selector" aria-label="theme selector">
+    <h1 class="title"><a href="/to-do-app/" aria-label="To Do">TODO</a></h1>
+    <button type="button" title="Toggles light & dark" aria-label="auto" aria-live="polite" id="themeSelector"
+      class="theme-selector">
       <img src="./icon-sun.svg" alt="" class="logo">
     </button>
   </header>
@@ -41,9 +42,9 @@
     </div>
 
     <div class="filter container">
-      <button type="button" id="filterAll" class="filter__btn selected">All</button>
-      <button type="button" id="filterActive" class="filter__btn">Active</button>
-      <button type="button" id="filterCompleted" class="filter__btn">Completed</button>
+      <button type="button" aria-label="filter all" id="filterAll" class="filter__btn selected">All</button>
+      <button type="button" aria-label="filter active" id="filterActive" class="filter__btn">Active</button>
+      <button type="button" aria-label="filter completed" id="filterCompleted" class="filter__btn">Completed</button>
     </div>
   </main>
 
