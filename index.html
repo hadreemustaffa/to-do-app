@@ -15,8 +15,9 @@
 
 <body>
   <header>
-    <h1 class="title"><a href="/" aria-label="To Do">TODO</a></h1>
-    <button type="button" id="themeSelector" class="theme-selector" aria-label="theme selector">
+    <h1 class="title"><a href="/to-do-app/" aria-label="To Do">TODO</a></h1>
+    <button type="button" title="Toggles light & dark" aria-label="auto" aria-live="polite" id="themeSelector"
+      class="theme-selector">
       <img src="./icon-sun.svg" alt="" class="logo">
     </button>
   </header>
@@ -39,9 +40,9 @@
     </div>
 
     <div class="filter container">
-      <button type="button" id="filterAll" class="filter__btn selected">All</button>
-      <button type="button" id="filterActive" class="filter__btn">Active</button>
-      <button type="button" id="filterCompleted" class="filter__btn">Completed</button>
+      <button type="button" aria-label="filter all" id="filterAll" class="filter__btn selected">All</button>
+      <button type="button" aria-label="filter active" id="filterActive" class="filter__btn">Active</button>
+      <button type="button" aria-label="filter completed" id="filterCompleted" class="filter__btn">Completed</button>
     </div>
   </main>
 
