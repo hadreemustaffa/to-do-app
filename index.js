@@ -18,6 +18,25 @@ const allTasks = '.list__item.task';
 const completedTasks = '.list__item.task.completed';
 const activeTasks = '.list__item.task:not(.completed)';
 
+const saveTasksToLocalStorage = () => {
+  const tasksArray = Array.from(tasks).map((task) => ({
+    id: task.querySelector('input').id,
+    text: task.querySelector('p').textContent,
+    completed: task.classList.contains('completed'),
+  }));
+  localStorage.setItem('tasks', JSON.stringify(tasksArray));
+};
+
+const loadTasksFromLocalStorage = () => {
+  const tasksArray = JSON.parse(localStorage.getItem('tasks')) || [];
+  tasksArray.forEach((task) => {
+    const taskElement = createTaskElement(task.text, task.id, task.completed);
+    taskList.appendChild(taskElement);
+  });
+  updateContainerDisplay();
+  updateTaskCount();
+};
+
 const setFilterDocumentStructure = () => {
   const isLargeScreen = window.innerWidth >= 760;
   const isInMain = filterContainer.parentElement === main;
@@ -85,11 +104,7 @@ const updateTaskCount = () => {
   let count = document.querySelectorAll(activeTasks).length;
 
   if (count > 0) {
-    if (count < 2) {
-      taskCount.textContent = `${count} item left`;
-    } else {
-      taskCount.textContent = `${count} items left`;
-    }
+    taskCount.textContent = `${count} ${count === 1 ? 'item' : 'items'} left`;
   } else {
     taskCount.textContent = '';
   }
@@ -110,11 +125,12 @@ const removeTaskFromList = (parentElement, element) => {
   element.classList.add('removing');
   setTimeout(() => {
     parentElement.removeChild(element);
+    saveTasksToLocalStorage();
     updateContainerDisplay();
   }, 350);
 };
 
-const createTaskElement = (inputText) => {
+const createTaskElement = (inputText, id = uuidv4(), completed = false) => {
   const li = document.createElement('li');
   const label = document.createElement('label');
   const inputCheckbox = document.createElement('input');
@@ -122,9 +138,8 @@ const createTaskElement = (inputText) => {
   const buttonDelete = document.createElement('button');
   const img = document.createElement('img');
 
-  let id = uuidv4();
-
   li.classList.add('list__item', 'task');
+  if (completed) li.classList.add('completed');
   li.setAttribute('draggable', 'true');
 
   li.addEventListener('dragstart', () => {
@@ -142,17 +157,18 @@ const createTaskElement = (inputText) => {
   inputCheckbox.name = 'complete';
   inputCheckbox.id = id;
   inputCheckbox.classList.add('list__item-input');
+  inputCheckbox.checked = completed;
 
   inputCheckbox.addEventListener('change', () => {
     const selectedFilter = document.querySelector('.selected');
     li.classList.toggle('completed');
-
+    saveTasksToLocalStorage();
     updateListDisplay(selectedFilter);
     updateTaskCount();
   });
 
   p.classList.add('list__item-text');
-  p.textContent = `${inputText}`;
+  p.textContent = inputText;
 
   buttonDelete.type = 'button';
   buttonDelete.ariaLabel = 'remove task';
@@ -180,14 +196,17 @@ const addNewTask = () => {
     const taskElement = createTaskElement(formattedInputText);
     taskList.appendChild(taskElement);
     taskInputText.value = '';
+    saveTasksToLocalStorage();
+    updateContainerDisplay();
   }
 };
 
 clearTaskButton.addEventListener('click', () => {
   const completedTasks = document.querySelectorAll('.completed');
   completedTasks.forEach((task) => {
-    removeTaskFromList(taskList, task, tasks);
+    removeTaskFromList(taskList, task);
   });
+  saveTasksToLocalStorage();
 });
 
 form.addEventListener('submit', (e) => {
@@ -230,3 +249,6 @@ function getDragAfterElement(container, y) {
     }) || null
   );
 }
+
+// Load tasks from Local Storage on page load
+document.addEventListener('DOMContentLoaded', loadTasksFromLocalStorage);
