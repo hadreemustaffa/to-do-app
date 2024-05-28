@@ -27,6 +27,11 @@ const saveTasksToLocalStorage = () => {
   localStorage.setItem('tasks', JSON.stringify(tasksArray));
 };
 
+const saveThemeToLocalStorage = () => {
+  const selectedTheme = html.getAttribute('data-theme');
+  localStorage.setItem('theme', selectedTheme);
+};
+
 const loadTasksFromLocalStorage = () => {
   const tasksArray = JSON.parse(localStorage.getItem('tasks')) || [];
   tasksArray.forEach((task) => {
@@ -35,6 +40,12 @@ const loadTasksFromLocalStorage = () => {
   });
   updateContainerDisplay();
   updateTaskCount();
+
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    html.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+  }
 };
 
 const setFilterDocumentStructure = () => {
@@ -54,9 +65,17 @@ const setFilterDocumentStructure = () => {
 
 setFilterDocumentStructure();
 
-window.addEventListener('resize', () => {
-  setFilterDocumentStructure();
-});
+window.addEventListener('resize', setFilterDocumentStructure);
+
+const updateThemeIcon = (theme) => {
+  if (theme === 'light') {
+    themeLogo.src = './icon-sun.svg';
+    themeLogo.removeAttribute('style');
+  } else {
+    themeLogo.src = './icon-moon.svg';
+    themeLogo.style.transform = 'rotate(360deg)';
+  }
+};
 
 const removeStyleAttribute = (elements) => {
   document.querySelectorAll(elements).forEach((element) => {
@@ -75,14 +94,12 @@ const setDisplayNone = (elements) => {
 };
 
 const updateListDisplay = (element) => {
-  if (element.id == 'filterAll') {
+  if (element.id === 'filterAll') {
     removeStyleAttribute(allTasks);
-  }
-  if (element.id == 'filterActive') {
+  } else if (element.id === 'filterActive') {
     removeStyleAttribute(activeTasks);
     setDisplayNone(completedTasks);
-  }
-  if (element.id == 'filterCompleted') {
+  } else if (element.id === 'filterCompleted') {
     removeStyleAttribute(completedTasks);
     setDisplayNone(activeTasks);
   }
@@ -101,13 +118,9 @@ filterButtons.forEach((button) => {
 });
 
 const updateTaskCount = () => {
-  let count = document.querySelectorAll(activeTasks).length;
-
-  if (count > 0) {
-    taskCount.textContent = `${count} ${count === 1 ? 'item' : 'items'} left`;
-  } else {
-    taskCount.textContent = '';
-  }
+  const count = document.querySelectorAll(activeTasks).length;
+  taskCount.textContent =
+    count > 0 ? `${count} ${count === 1 ? 'item' : 'items'} left` : '';
 };
 
 const updateContainerDisplay = () => {
@@ -132,33 +145,24 @@ const removeTaskFromList = (parentElement, element) => {
 
 const createTaskElement = (inputText, id = uuidv4(), completed = false) => {
   const li = document.createElement('li');
-  const label = document.createElement('label');
-  const inputCheckbox = document.createElement('input');
-  const p = document.createElement('p');
-  const buttonDelete = document.createElement('button');
-  const img = document.createElement('img');
-
   li.classList.add('list__item', 'task');
   if (completed) li.classList.add('completed');
   li.setAttribute('draggable', 'true');
 
-  li.addEventListener('dragstart', () => {
-    li.classList.add('dragging');
-  });
-  li.addEventListener('dragend', () => {
-    li.classList.remove('dragging');
-  });
+  li.addEventListener('dragstart', () => li.classList.add('dragging'));
+  li.addEventListener('dragend', () => li.classList.remove('dragging'));
 
+  const label = document.createElement('label');
   label.setAttribute('for', id);
   label.classList.add('sr-only');
   label.textContent = 'Check box to complete task';
 
+  const inputCheckbox = document.createElement('input');
   inputCheckbox.type = 'checkbox';
   inputCheckbox.name = 'complete';
   inputCheckbox.id = id;
   inputCheckbox.classList.add('list__item-input');
   inputCheckbox.checked = completed;
-
   inputCheckbox.addEventListener('change', () => {
     const selectedFilter = document.querySelector('.selected');
     li.classList.toggle('completed');
@@ -167,25 +171,24 @@ const createTaskElement = (inputText, id = uuidv4(), completed = false) => {
     updateTaskCount();
   });
 
+  const p = document.createElement('p');
   p.classList.add('list__item-text');
   p.textContent = inputText;
 
+  const buttonDelete = document.createElement('button');
   buttonDelete.type = 'button';
   buttonDelete.ariaLabel = 'remove task';
   buttonDelete.id = `remove-${id}`;
   buttonDelete.classList.add('list__btn-remove');
-
   buttonDelete.addEventListener('click', () => {
     removeTaskFromList(taskList, li);
   });
 
+  const img = document.createElement('img');
   img.src = './icon-cross.svg';
 
-  li.appendChild(label);
-  li.appendChild(inputCheckbox);
-  li.appendChild(p);
   buttonDelete.appendChild(img);
-  li.appendChild(buttonDelete);
+  li.append(label, inputCheckbox, p, buttonDelete);
 
   return li;
 };
@@ -202,8 +205,7 @@ const addNewTask = () => {
 };
 
 clearTaskButton.addEventListener('click', () => {
-  const completedTasks = document.querySelectorAll('.completed');
-  completedTasks.forEach((task) => {
+  document.querySelectorAll('.completed').forEach((task) => {
     removeTaskFromList(taskList, task);
   });
   saveTasksToLocalStorage();
@@ -216,15 +218,11 @@ form.addEventListener('submit', (e) => {
 });
 
 selectThemeButton.addEventListener('click', () => {
-  if (html.getAttribute('data-theme') == 'light') {
-    html.setAttribute('data-theme', 'dark');
-    themeLogo.src = './icon-moon.svg';
-    themeLogo.style.transform = 'rotate(360deg)';
-  } else {
-    html.setAttribute('data-theme', 'light');
-    themeLogo.src = './icon-sun.svg';
-    themeLogo.removeAttribute('style');
-  }
+  const currentTheme = html.getAttribute('data-theme');
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', newTheme);
+  updateThemeIcon(newTheme);
+  saveThemeToLocalStorage();
 });
 
 taskList.addEventListener('dragover', (e) => {
@@ -250,5 +248,4 @@ function getDragAfterElement(container, y) {
   );
 }
 
-// Load tasks from Local Storage on page load
 document.addEventListener('DOMContentLoaded', loadTasksFromLocalStorage);
