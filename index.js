@@ -225,20 +225,9 @@ selectThemeButton.addEventListener('click', () => {
   saveThemeToLocalStorage();
 });
 
-taskList.addEventListener('dragover', (e) => {
-  e.preventDefault();
-  const dragElement = document.querySelector('.dragging');
-  const afterElement = getDragAfterElement(taskList, e.clientY);
-  if (afterElement == null) {
-    taskList.appendChild(dragElement);
-  } else {
-    taskList.insertBefore(dragElement, afterElement);
-  }
-});
-
-function getDragAfterElement(container, y) {
+const getDragAfterElement = (container, y) => {
   const draggableElements = [
-    ...container.querySelectorAll("li[draggable='true']"),
+    ...container.querySelectorAll("li[draggable='true']:not(.dragging)"),
   ];
   return (
     draggableElements.find((element) => {
@@ -246,6 +235,45 @@ function getDragAfterElement(container, y) {
       return y < box.top + box.height / 2;
     }) || null
   );
-}
+};
+
+const handleDragStart = (e) => {
+  e.target.classList.add('dragging');
+};
+
+const handleDragEnd = (e) => {
+  e.target.classList.remove('dragging');
+};
+
+const handleDragOver = (e) => {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  const draggingElement = taskList.querySelector('.dragging');
+  const afterElement = getDragAfterElement(taskList, e.clientY);
+  if (afterElement === null) {
+    taskList.appendChild(draggingElement);
+  } else {
+    taskList.insertBefore(draggingElement, afterElement);
+  }
+};
+
+const handleDrop = (e) => {
+  e.preventDefault();
+  saveTasksToLocalStorage();
+};
+
+const initDragAndDrop = () => {
+  const draggables = taskList.querySelectorAll('li[draggable="true"]');
+
+  draggables.forEach((draggable) => {
+    draggable.addEventListener('dragstart', handleDragStart);
+    draggable.addEventListener('dragend', handleDragEnd);
+  });
+
+  taskList.addEventListener('dragover', handleDragOver);
+  taskList.addEventListener('drop', handleDrop);
+};
+
+initDragAndDrop();
 
 document.addEventListener('DOMContentLoaded', loadTasksFromLocalStorage);
