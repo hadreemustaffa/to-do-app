@@ -361,7 +361,7 @@ footer {
 }
 .dragging {
   opacity: 0.5;
-  cursor: grabbing !important;
+  cursor: move !important;
 }
 
 .filtered,
